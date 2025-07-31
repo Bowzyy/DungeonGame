@@ -8,22 +8,19 @@ bool TileMap::load(const std::string& tmxFile, const std::string& tilesetTexture
     if (!map.load(tmxFile))
         return false;
 
-    if (!m_tileset.loadFromFile(tilesetTexture))
+    if (!tileset.loadFromFile(tilesetTexture))
         return false;
 
     const auto& tilesets = map.getTilesets();
     if (tilesets.empty()) return false;
 
-    m_tileWidth = 16;
-    m_tileHeight = 16;
-
     const auto& layers = map.getLayers();
     if (layers.empty()) return false;
 
-    unsigned columns = m_tileset.getSize().x / m_tileWidth;
+    unsigned columns = tileset.getSize().x / tile_width;
 
     // clear
-    m_layersVertices.clear();
+    layersVertices.clear();
 
     for (const auto& layer : layers)
     {
@@ -52,34 +49,34 @@ bool TileMap::load(const std::string& tmxFile, const std::string& tilesetTexture
                 int tu = tileID % columns - 1; // shift tilemap over (hi idk it worked in second year!))
                 int tv = tileID / columns;
 
-                float px = x * m_tileWidth;
-                float py = y * m_tileHeight;
-                float tx = tu * m_tileWidth;
-                float ty = tv * m_tileHeight;
+                float px = x * tile_width;
+                float py = y * tile_height;
+                float tx = tu * tile_width;
+                float ty = tv * tile_height;
 
                 sf::Vertex* tri = &vertices[(y * width + x) * 6];
 
                 // t1
                 tri[0].position = { px, py };
-                tri[1].position = { px + m_tileWidth, py };
-                tri[2].position = { px + m_tileWidth, py + m_tileHeight };
+                tri[1].position = { px + tile_width, py };
+                tri[2].position = { px + tile_width, py + tile_height };
 
                 tri[0].texCoords = { tx, ty };
-                tri[1].texCoords = { tx + m_tileWidth, ty };
-                tri[2].texCoords = { tx + m_tileWidth, ty + m_tileHeight };
+                tri[1].texCoords = { tx + tile_width, ty };
+                tri[2].texCoords = { tx + tile_width, ty + tile_height };
 
                 // t2
                 tri[3].position = { px, py };
-                tri[4].position = { px + m_tileWidth, py + m_tileHeight };
-                tri[5].position = { px, py + m_tileHeight };
+                tri[4].position = { px + tile_width, py + tile_height };
+                tri[5].position = { px, py + tile_height };
 
                 tri[3].texCoords = { tx, ty };
-                tri[4].texCoords = { tx + m_tileWidth, ty + m_tileHeight };
-                tri[5].texCoords = { tx, ty + m_tileHeight };
+                tri[4].texCoords = { tx + tile_width, ty + tile_height };
+                tri[5].texCoords = { tx, ty + tile_height };
             }
         }
 
-        m_layersVertices.push_back(std::move(vertices));
+        layersVertices.push_back(std::move(vertices));
     }
 
     return true;
@@ -89,9 +86,9 @@ bool TileMap::load(const std::string& tmxFile, const std::string& tilesetTexture
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-    states.texture = &m_tileset;
+    states.texture = &tileset;
 
-    for (const auto& vertices : m_layersVertices)
+    for (const auto& vertices : layersVertices)
     {
         target.draw(vertices, states);
     }

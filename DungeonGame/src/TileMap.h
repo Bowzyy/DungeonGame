@@ -12,10 +12,10 @@ public:
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    sf::Texture m_tileset;
-    std::vector<sf::VertexArray> m_layersVertices;  // layers
+    sf::Texture tileset;
+    std::vector<sf::VertexArray> layersVertices;  // layers
 
     // size of tiles
-    unsigned m_tileWidth = 0;
-    unsigned m_tileHeight = 0;
+    unsigned tile_width = 16;
+    unsigned tile_height = 16;
 };
