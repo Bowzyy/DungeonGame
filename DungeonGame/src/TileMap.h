@@ -13,7 +13,9 @@ private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     sf::Texture m_tileset;
-    sf::VertexArray m_vertices;  // all tiles in one big vertex array
+    std::vector<sf::VertexArray> m_layersVertices;  // layers
+
+    // size of tiles
     unsigned m_tileWidth = 0;
     unsigned m_tileHeight = 0;
 };
