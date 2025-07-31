@@ -4,14 +4,22 @@ project(DungeonGame)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Find SFML 3
 find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
 
+# Add tmxlite as a subdirectory
+add_subdirectory(external/tmxlite)
+
+# Your executable
 add_executable(DungeonGame
     main.cpp
-    src/game.cpp
-    src/game.h
+    src/Game.cpp
+    src/TileMap.cpp
 )
 
 target_include_directories(DungeonGame PRIVATE src)
 
-target_link_libraries(DungeonGame PRIVATE SFML::Graphics SFML::Window SFML::System)
+# Link libraries
+target_link_libraries(DungeonGame 
+    PRIVATE SFML::Graphics SFML::Window SFML::System tmxlite
+)

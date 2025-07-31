@@ -1,0 +1,3 @@
+[submodule "DungeonGame/external/external/tmxlite"]
+	path = DungeonGame/external/external/tmxlite
+	url = https://github.com/fallahn/tmxlite

@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+#include "TileMap.h"
+
 class Game
 {
 public:
@@ -19,4 +21,6 @@ public:
 
 private:
     sf::RenderWindow& window;
+    TileMap map;
+
 };

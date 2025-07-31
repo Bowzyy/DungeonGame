@@ -15,8 +15,8 @@ Game::~Game()
 
 bool Game::init()
 {
-    // Load textures, initialise variables, etc.
-    std::cout << "Game initialised!\n";
+    std::cout << "Game initialised!" << std::endl;
+    map.load("assets/maps/busstop.tmx", "assets/tilesets/tileset.png");
     return true;
 }
 
@@ -27,7 +27,7 @@ void Game::update(float dt)
 
 void Game::render()
 {
-    // Draw your objects
+    window.draw(map);
 }
 
 
