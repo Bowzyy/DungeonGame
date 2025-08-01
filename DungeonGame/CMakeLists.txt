@@ -23,3 +23,5 @@ target_include_directories(DungeonGame PRIVATE src)
 target_link_libraries(DungeonGame 
     PRIVATE SFML::Graphics SFML::Window SFML::System tmxlite
 )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/assets/)
