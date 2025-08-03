@@ -22,5 +22,4 @@ public:
 private:
     sf::RenderWindow& window;
     TileMap map;
-
 };
