@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "TileMap.h"
+#include "GameObject.h"
 
 class Game
 {
@@ -22,4 +23,6 @@ public:
 private:
     sf::RenderWindow& window;
     TileMap map;
+
+    GameObject player;
 };
