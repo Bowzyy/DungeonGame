@@ -14,6 +14,6 @@ public:
     void onKeyReleased(sf::Keyboard::Key key);
 
 private:
-    float moveSpeed;
-    Direction currentDir = Direction::None;
+    float move_speed;
+    Direction current_direction = Direction::None;
 };
