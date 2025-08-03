@@ -19,8 +19,13 @@ bool Game::init()
     map.load("assets/maps/busstop.tmx", "assets/tilesets/tileset.png");
     // Load textures, initialise variables, etc.
 
+    // ---- PLAYER ----
     player = std::make_shared<Player>(sf::Vector2f{ 100.f, 100.f }, 1000.0f);
     player->initialiseSprite("assets/player.png");
+
+    // ---- CAMERA ----
+    view = window.getView();
+    view.zoom(0.25);
 
     std::cout << "Game initialised!\n";
     return true;
@@ -29,10 +34,12 @@ bool Game::init()
 void Game::update(float dt)
 {
     player->update(dt);
+    view.setCenter(player->getPosition());
 }
 
 void Game::render()
 {
+    window.setView(view);
     window.draw(map);
     player->draw(window);
     

@@ -30,11 +30,6 @@ private:
     // player
     // player is a shared pointer as its accessed by multiple parts in the game
     std::shared_ptr<Player> player;
-
-    enum player_movement {
-        left,
-        right,
-        up,
-        down
-    };
+    
+    sf::View view; // camera to follow the player
 };
