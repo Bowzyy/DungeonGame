@@ -19,20 +19,23 @@ bool Game::init()
     map.load("assets/maps/busstop.tmx", "assets/tilesets/tileset.png");
     // Load textures, initialise variables, etc.
 
-    player.initialiseSprite("assets/player.png");
+    player = std::make_shared<Player>(sf::Vector2f{ 100.f, 100.f }, 1000.0f);
+    player->initialiseSprite("assets/player.png");
+
     std::cout << "Game initialised!\n";
     return true;
 }
 
 void Game::update(float dt)
 {
-    // Update game logic
+    player->update(dt);
 }
 
 void Game::render()
 {
     window.draw(map);
-    player.draw(window);
+    player->draw(window);
+    
     // Draw your objects
 }
 
@@ -68,18 +71,16 @@ void Game::mouseReleased(const sf::Event& event)
 
 void Game::keyPressed(const sf::Event& event)
 {
-    if (const auto* keyEvent = event.getIf<sf::Event::KeyPressed>())
-    {
-        if (keyEvent->scancode == sf::Keyboard::Scan::A)
-            std::cout << "A pressed\n";
+    if (const auto* keyEvent = event.getIf<sf::Event::KeyPressed>()) {
+        player->onKeyPressed(keyEvent->code);
     }
 }
 
 void Game::keyReleased(const sf::Event& event)
 {
-    if (const auto* keyEvent = event.getIf<sf::Event::KeyReleased>())
-    {
-        if (keyEvent->scancode == sf::Keyboard::Scan::A)
-            std::cout << "A Released\n";
+    if (const auto* keyEvent = event.getIf<sf::Event::KeyReleased>()) {
+        player->onKeyReleased(keyEvent->code);
     }
 }
+
+
