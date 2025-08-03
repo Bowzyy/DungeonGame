@@ -15,7 +15,7 @@ add_executable(DungeonGame
     main.cpp
     src/Game.cpp
     src/TileMap.cpp
- "src/GameObject.h" "src/GameObject.cpp" "src/Player.h" "src/Player.cpp")
+ "src/GameObject.h" "src/GameObject.cpp" "src/Player.h" "src/Player.cpp" "src/Animation.h" "src/Animation.cpp")
 
 target_include_directories(DungeonGame PRIVATE src)
 

@@ -62,7 +62,7 @@ std::shared_ptr<sf::Texture> GameObject::loadTexture(const std::string& filename
     }
 
     // additions like texture smoothing
-    tex->setSmooth(true);
+    //tex->setSmooth(true);
 
     cache[filename] = tex;
     return tex;

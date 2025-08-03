@@ -20,9 +20,9 @@ public:
 
 protected:
     std::unique_ptr<sf::Sprite> sprite;
+    std::shared_ptr<sf::Texture> texture;   // moved to protected to be accessable by animation
 
 private:
-    std::shared_ptr<sf::Texture> texture;
 
     //allows for a "cache" of textures to stop multiple reloads of the same file
     static std::shared_ptr<sf::Texture> loadTexture(const std::string& filename);

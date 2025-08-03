@@ -20,8 +20,7 @@ bool Game::init()
     // Load textures, initialise variables, etc.
 
     // ---- PLAYER ----
-    player = std::make_shared<Player>(sf::Vector2f{ 100.f, 100.f }, 1000.0f);
-    player->initialiseSprite("assets/player.png");
+    player = std::make_shared<Player>("assets/player_spritesheet.png", sf::Vector2f{ 100.f, 100.f }, 125.0f);
 
     // ---- CAMERA ----
     view = window.getView();

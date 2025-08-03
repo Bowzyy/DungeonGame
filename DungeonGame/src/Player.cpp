@@ -1,31 +1,46 @@
 #include "Player.h"
+#include <stdexcept>
 
-Player::Player(const sf::Vector2f& startPos, float speed)
+Player::Player(const std::string& filename, const sf::Vector2f& start_pos, float speed)
     : move_speed(speed)
 {
-    setPosition(startPos);
+    // Load texture and initialize sprite first
+    if (!initialiseSprite(filename)) {
+        throw std::runtime_error("Failed to load player texture: " + filename);
+    }
+
+    setPosition(start_pos);
+
+    // get texture from gameobject
+    animation = std::make_unique<Animation>(texture, 28, 40, 0.05f);
+    player_state = Animation::State::idle_down;
+    animation->setState(player_state);
 }
 
-// get key data from game and transform into movement
 void Player::onKeyPressed(sf::Keyboard::Key key)
 {
     switch (key) {
     case sf::Keyboard::Key::A:
         current_direction = Direction::Left;
+        previous_direction = current_direction;
         break;
     case sf::Keyboard::Key::D:
         current_direction = Direction::Right;
+        previous_direction = current_direction;
         break;
     case sf::Keyboard::Key::W:
         current_direction = Direction::Up;
+        previous_direction = current_direction;
         break;
     case sf::Keyboard::Key::S:
         current_direction = Direction::Down;
+        previous_direction = current_direction;
         break;
     default:
         break;
     }
 }
+
 
 void Player::onKeyReleased(sf::Keyboard::Key key)
 {
@@ -47,8 +62,58 @@ void Player::onKeyReleased(sf::Keyboard::Key key)
     }
 }
 
+void Player::updateAnimationState()
+{
+    Animation::State desired;
+
+    // ---- IDLE ----
+    if (current_direction == Direction::None) {
+        switch (previous_direction) {
+        case Direction::Left:
+            desired = Animation::State::idle_left;
+            break;
+        case Direction::Right:
+            desired = Animation::State::idle_right;
+            break;
+        case Direction::Up:
+            desired = Animation::State::idle_up;
+            break;
+        case Direction::Down:
+        default:
+            desired = Animation::State::idle_down;
+            break;
+        }
+    }
+    // ---- WALKING ----
+    else {
+        switch (current_direction) {
+        case Direction::Left:
+            desired = Animation::State::walk_left;
+            break;
+        case Direction::Right:
+            desired = Animation::State::walk_right;
+            break;
+        case Direction::Up:
+            desired = Animation::State::walk_up;
+            break;
+        case Direction::Down:
+            desired = Animation::State::walk_down;
+            break;
+        default:
+            desired = Animation::State::idle_down;
+            break;
+        }
+    }
+
+    if (desired != player_state) {
+        player_state = desired;
+        animation->setState(player_state);
+    }
+}
+
 void Player::update(float dt)
 {
+    // Movement
     sf::Vector2f delta{ 0.f, 0.f };
     switch (current_direction) {
     case Direction::Left:
@@ -69,5 +134,14 @@ void Player::update(float dt)
 
     if (delta.x != 0.f || delta.y != 0.f) {
         setPosition(getPosition() + delta);
+    }
+
+    // update animation
+    updateAnimationState();
+    animation->update(dt);
+
+    // update player sprite based on animation
+    if (sprite) {
+        animation->applyToSprite(*sprite);
     }
 }
